@@ -7,6 +7,7 @@
 import SwiftUI
 import CoreData
 import UserNotifications
+import FirebaseCore
 
 @main
 struct ToDoSwiftUIApp: App {
@@ -16,6 +17,9 @@ struct ToDoSwiftUIApp: App {
         WindowGroup {
             TaskListView().environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+    }
+    init(){
+        FirebaseApp.configure()
     }
     
     private func requestNotificationPermissions() {
