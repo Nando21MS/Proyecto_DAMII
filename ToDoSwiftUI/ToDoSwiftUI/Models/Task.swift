@@ -17,7 +17,6 @@ class Task: NSManagedObject, Identifiable {
     @NSManaged var priority: String?
     @NSManaged var category: String?
 
-    
     static func fetchAllTaskRequest() -> NSFetchRequest<Task> {
         return NSFetchRequest<Task>(entityName: "Task")
     }
