@@ -9,65 +9,88 @@ import SwiftUI
 
 struct TaskListView: View {
     @StateObject private var viewModel = TaskListViewModel()
-    
+    @State private var selectedCategory: String = "All" // Categoría seleccionada
+
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.tasks) { task in
-                    NavigationLink(destination: TaskDetailView(
-                        title: task.title ?? "",
-                        details: task.details ?? "",
-                        reminderDate: task.reminderDate,
-                        priority: task.priority ?? "Low", // Valor predeterminado para priority
-                        category: task.category ?? "Work" // Valor predeterminado para category
-                    ) { newTitle, newDetails, newReminderDate, newPriority, newCategory in
-                        viewModel.updateTask(
-                            task: task,              // Tarea a actualizar
-                            newTitle: newTitle,      // Nuevo título
-                            newDetails: newDetails,  // Nuevos detalles
-                            newReminderDate: newReminderDate, // Nueva fecha de recordatorio
-                            priority: newPriority,   // Nueva prioridad
-                            category: newCategory    // Nueva categoría
-                        )
-                    }) {
-                        VStack(alignment: .leading) {
-                            Text(task.title ?? "No Title")
-                                .font(.headline)
-                            if let reminder = task.reminderDate {
-                                Text("Reminder: \(reminder, formatter: DateFormatter.shortDateTimeFormatter)")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
+            ZStack {
+                VStack {
+                    // Filtros de categorías
+                    Picker("Category", selection: $selectedCategory) {
+                        Text("All").tag("All")
+                        Text("Work").tag("Work")
+                        Text("Study").tag("Study")
+                        Text("Home").tag("Home")
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding()
+
+                    // Listado de tareas filtradas
+                    List {
+                        ForEach(filteredTasks) { task in
+                            NavigationLink(destination: TaskDetailView(
+                                title: task.title ?? "",
+                                details: task.details ?? "",
+                                reminderDate: task.reminderDate,
+                                priority: task.priority ?? "Low",
+                                category: task.category ?? "Work"
+                            ) { newTitle, newDetails, newReminderDate, newPriority, newCategory in
+                                viewModel.updateTask(
+                                    task: task,
+                                    newTitle: newTitle,
+                                    newDetails: newDetails,
+                                    newReminderDate: newReminderDate,
+                                    priority: newPriority,
+                                    category: newCategory
+                                )
+                            }) {
+                                VStack(alignment: .leading) {
+                                    Text(task.title ?? "No Title")
+                                        .font(.headline)
+                                    if let reminder = task.reminderDate {
+                                        Text("Reminder: \(reminder, formatter: DateFormatter.shortDateTimeFormatter)")
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                    }
+                                }
                             }
                         }
+                        .onDelete { indexSet in
+                            indexSet.forEach { viewModel.deleteTask(task: viewModel.tasks[$0]) }
+                        }
                     }
-                }
-                .onDelete { indexSet in
-                    indexSet.forEach { viewModel.deleteTask(task: viewModel.tasks[$0]) }
-                }
-            }
-            .navigationTitle("Tasks")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: TaskDetailView(
-                        title: "",
-                        details: "",
-                        reminderDate: nil,
-                        priority: "Low", // Valor predeterminado para priority
-                        category: "Work" // Valor predeterminado para category
-                    ) { title, details, reminderDate, priority, category in
-                        viewModel.addTask(
-                            title: title,         // Título de la nueva tarea
-                            details: details,     // Detalles de la nueva tarea
-                            reminderDate: reminderDate, // Fecha de recordatorio
-                            priority: priority,   // Prioridad de la nueva tarea
-                            category: category    // Categoría de la nueva tarea
-                        )
-                    }) {
-                        Image(systemName: "plus")
-                    }
+                    .navigationTitle("Tasks")
 
+                    // Botón flotante
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        NavigationLink(destination: NewTaskView(
+                            onSave: { title, details, reminderDate, priority, category in
+                                viewModel.addTask(title: title, details: details, reminderDate: reminderDate, priority: priority, category: category)
+                            }
+                        )) {
+                            Image(systemName: "plus")
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Circle().fill(Color.blue))
+                                .shadow(radius: 10)
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.bottom, 20)
+                    }
                 }
             }
+        }
+    }
+
+    // Computed property para filtrar tareas según la categoría seleccionada
+    private var filteredTasks: [Task] {
+        if selectedCategory == "All" {
+            return viewModel.tasks
+        } else {
+            return viewModel.tasks.filter { $0.category == selectedCategory }
         }
     }
 }

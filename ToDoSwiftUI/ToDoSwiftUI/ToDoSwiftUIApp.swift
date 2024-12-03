@@ -13,9 +13,13 @@ import FirebaseCore
 struct ToDoSwiftUIApp: App {
     let persistenceController = PersistenceController.shared
     
+    init() {
+        requestNotificationPermissions()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            TaskListView().environment(\.managedObjectContext, persistenceController.container.viewContext)
+            HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
     init(){
