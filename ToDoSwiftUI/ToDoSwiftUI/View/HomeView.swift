@@ -11,10 +11,10 @@ struct HomeView: View {
     var body: some View {
         TabView {
             TaskListView().tabItem {
-                Label("Notas", systemImage: "note.text")
+                Label("Taks", systemImage: "note.text")
             }
-            TaskListView().tabItem {
-                Label("Calendario", systemImage: "calendar")
+            CalendarView().tabItem {
+                Label("Calendar", systemImage: "calendar")
             }
         }
     }
