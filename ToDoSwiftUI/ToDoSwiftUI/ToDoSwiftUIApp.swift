@@ -7,7 +7,7 @@
 import SwiftUI
 import CoreData
 import UserNotifications
-import FirebaseCore
+//import FirebaseCore
 
 @main
 struct ToDoSwiftUIApp: App {
@@ -22,10 +22,10 @@ struct ToDoSwiftUIApp: App {
             HomeView().environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
-    init(){
+  /*  init(){
         FirebaseApp.configure()
     }
-    
+    */
     private func requestNotificationPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             if let error = error {

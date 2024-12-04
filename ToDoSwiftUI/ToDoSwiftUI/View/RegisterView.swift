@@ -4,10 +4,7 @@
 //
 //  Created by DAMII on 3/12/24.
 //
-
-import SwiftUI
-
-
+/*
 import SwiftUI
 
 struct RegisterView: View {
@@ -213,4 +210,4 @@ struct GenderButton: View {
 #Preview {
     RegisterView()
 }
-
+*/
