@@ -7,13 +7,14 @@
 import SwiftUI
 import CoreData
 import UserNotifications
-//import FirebaseCore
+import FirebaseCore
 
 @main
 struct ToDoSwiftUIApp: App {
     let persistenceController = PersistenceController.shared
     
     init() {
+        FirebaseApp.configure()
         requestNotificationPermissions()
     }
     
