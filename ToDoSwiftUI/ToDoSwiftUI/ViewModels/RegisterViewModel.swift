@@ -4,7 +4,7 @@
 //
 //  Created by DAMII on 3/12/24.
 //
-
+/*
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
@@ -57,3 +57,4 @@ class RegisterViewModel: ObservableObject {
         }
     }
 }
+*/
