@@ -59,7 +59,6 @@ struct TaskListView: View {
                             indexSet.forEach { viewModel.deleteTask(task: viewModel.tasks[$0]) }
                         }
                     }
-                    .navigationTitle("Tasks")
 
                     // Botón flotante
                     Spacer()
@@ -82,6 +81,20 @@ struct TaskListView: View {
                     }
                 }
             }
+            .navigationTitle("Tasks") // Limpia el espacio predeterminado
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "person.circle")
+                            .font(.system(size: 32))
+                            .foregroundColor(.blue)
+                            .padding(.top, 90)
+                    }
+                    .padding(.trailing, 10)
+                }
+            }
+
         }
     }
 
