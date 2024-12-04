@@ -1,0 +1,18 @@
+# Archivos temporales y de sistema
+*.DS_Store
+
+# Configuraciones locales de Xcode
+xcuserdata/
+UserInterfaceState.xcuserstate
+xcschememanagement/
+
+# Archivos de compilación de Xcode
+DerivedData/
+build/
+
+# Archivos de Swift Package Manager
+swiftpm/
+
+# Archivos ocultos de macOS
+._*
+
